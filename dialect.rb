@@ -200,6 +200,7 @@ end
 
 bot.command :reset do |event, deckname|
 	if deckname.nil?
+		@players = Hash.new
 		@deck["archetypes"] = @cleandeck["archetypes"].clone
 		@deck["age1"] = @cleandeck["age1"].clone
 		@deck["age2"] = @cleandeck["age2"].clone
@@ -227,5 +228,17 @@ bot.command :hand do |event|
 		event.send_embed(event.user.mention, embed)
 	end
 end
+
+bot.command :discard do |event|
+	if @players.keys.include?(event.user.id)
+		@players.delete(event.user.id)
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Cleared user's drawn cards"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/582656959275204665/793264946229018684/img6193.jpg")
+		event.send_embed(event.user.mention, embed)
+		return nil
+	end
+end
+
 
 bot.run
