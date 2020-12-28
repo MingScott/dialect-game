@@ -67,6 +67,18 @@ file = File.open("decks/legacy.txt")
 pp @deck["legacy"]
 file.close
 
+@players = Hash.new
+
+def playerCheckAdd(user, data)
+	if @players.keys.include?(user)
+		@players[user] << data
+	else
+		@players[user] = []
+		@players[user] << data
+	end
+	return nil
+end
+
 #deal
 bot.command :archetypes do |event|
 	File.open("./card-backs/img76.jpg", "r") do |file|
@@ -87,6 +99,7 @@ bot.command :archetypes do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793231604184252426/img76.jpg")
 		embed.description = output
 		event.send_embed(event.user.mention, embed)
+		playerCheckAdd(event.user.id, output)
 	end
 end
 
@@ -112,6 +125,7 @@ bot.command :age1 do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793238643216351242/img210.jpg")
 		embed.description = output
 		event.send_embed(event.user.mention, embed)
+		playerCheckAdd(event.user.id, output)
 	end
 end
 
@@ -135,6 +149,7 @@ bot.command :age2 do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793238746064879616/img409.jpg")
 		embed.description = output
 		event.send_embed(event.user.mention, embed)
+		playerCheckAdd(event.user.id, output)
 	end
 end
 
@@ -158,6 +173,7 @@ bot.command :age3 do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793232127377670144/img696.jpg")
 		embed.description = output
 		event.send_embed(event.user.mention, embed)
+		playerCheckAdd(event.user.id, output)
 	end
 end
 
@@ -178,6 +194,7 @@ bot.command :legacy do |event|
 		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793232158944788530/img834.jpg")
 		embed.description = output
 		event.send_embed(event.user.mention, embed)
+		playerCheckAdd(event.user.id, output)
 	end
 end
 
@@ -194,6 +211,20 @@ bot.command :reset do |event, deckname|
 		return "#{deckname} reset!"
 	else
 		return "#{deckname} is an invalid key!"
+	end
+end
+
+bot.command :hand do |event|
+	if @players.keys.include?(event.user.id)
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Cards Drawn"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/742363567046656033/793222805193621574/img727.jpg")
+		embed.description = "|| " + @players[event.user.id].map{|e| e.gsub("||","")}.join("") + " ||"
+		event.send_embed(event.user.mention, embed)
+	else
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "No Cards Yet Drawn"
+		event.send_embed(event.user.mention, embed)
 	end
 end
 
