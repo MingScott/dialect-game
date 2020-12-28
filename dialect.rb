@@ -70,30 +70,57 @@ file.close
 #deal
 bot.command :archetypes do |event|
 	File.open("./card-backs/img76.jpg", "r") do |file|
-		event.send_file(file)
-	end
-	output = "#{event.user.mention}\n"
-	for ii in (0..2)
-		unless @deck["archetypes"].empty?
-			card = @deck["archetypes"].shuffle!.pop
-			output << "|| **" + card["title"] + "**\n"
-			output << card["desc"] + "\n"
-			output << "**" + card["aspects"] + "** ||\n\n"
-		else
-			output << "**No cards left**\n"
+		output = ""
+		for ii in (0..2)
+			unless @deck["archetypes"].empty?
+				pp card
+				card = @deck["archetypes"].shuffle!.pop
+				output << "|| **" + card["title"] + "**\n"
+				output << card["desc"] + "\n"
+				output << "**" + card["aspects"] + "** ||\n\n"
+			else
+				output << "**No cards left**\n"
+			end
 		end
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Archetype"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793231604184252426/img76.jpg")
+		embed.description = output
+		event.send_embed(event.user.mention, embed)
 	end
-	return output
 end
 
 bot.command :age1 do |event|
 	File.open("./card-backs/img210.jpg", "r") do |file|
-		event.send_file(file)
+		output = ""
+		for ii in (0..2)
+			unless @deck["age1"].empty?
+				card = @deck["age1"].shuffle!.pop
+				pp card
+				output << "|| **" + card["title"] + "**\n"
+				output << card["desc"] + "\n"
+				if not card["instructions"].nil?
+					output << "*" + card["instructions"] + "*\n"
+				end
+				output << "**" + card["blurb"] + "** ||\n\n"
+			else
+				output << "**No cards left**\n"
+			end
+		end
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Age 1"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793238643216351242/img210.jpg")
+		embed.description = output
+		event.send_embed(event.user.mention, embed)
 	end
-	output = "#{event.user.mention}\n"
-	for ii in (0..2)
-		unless @deck["age1"].empty?
-			card = @deck["age1"].shuffle!.pop
+end
+
+bot.command :age2 do |event|
+	File.open("./card-backs/img409.jpg", "r") do |file|
+		output = ""
+		unless @deck["age2"].empty?
+			card = @deck["age2"].shuffle!.pop
+			pp card
 			output << "|| **" + card["title"] + "**\n"
 			output << card["desc"] + "\n"
 			if not card["instructions"].nil?
@@ -103,63 +130,55 @@ bot.command :age1 do |event|
 		else
 			output << "**No cards left**\n"
 		end
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Age 2"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793238746064879616/img409.jpg")
+		embed.description = output
+		event.send_embed(event.user.mention, embed)
 	end
-	return output
-end
-
-bot.command :age2 do |event|
-	File.open("./card-backs/img409.jpg", "r") do |file|
-		event.send_file(file)
-	end
-	output = "#{event.user.mention}\n"
-	unless @deck["age2"].empty?
-		card = @deck["age2"].shuffle!.pop
-		output << "|| **" + card["title"] + "**\n"
-		output << card["desc"] + "\n"
-		if not card["instructions"].nil?
-			output << "*" + card["instructions"] + "*\n"
-		end
-		output << "**" + card["blurb"] + "** ||\n\n"
-	else
-		output << "**No cards left**\n"
-	end
-	return output
 end
 
 bot.command :age3 do |event|
 	File.open("./card-backs/img696.jpg", "r") do |file|
-		event.send_file(file)
-	end
-	output = "#{event.user.mention}\n"
-	unless @deck["age3"].empty?
-		card = @deck["age3"].shuffle!.pop
-		output << "|| **" + card["title"] + "**\n"
-		output << card["desc"] + "\n"
-		if not card["instructions"].nil?
-			output << "*" + card["instructions"] + "*\n"
+		output = ""
+		unless @deck["age3"].empty?
+			card = @deck["age3"].shuffle!.pop
+			pp card
+			output << "|| **" + card["title"] + "**\n"
+			output << card["desc"] + "\n"
+			if not card["instructions"].nil?
+				output << "*" + card["instructions"] + "*\n"
+			end
+			output << "**" + card["blurb"] + "** ||\n\n"
+		else
+			output << "**No cards left**\n"
 		end
-		output << "**" + card["blurb"] + "** ||\n\n"
-	else
-		output << "**No cards left**\n"
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Age 3"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793232127377670144/img696.jpg")
+		embed.description = output
+		event.send_embed(event.user.mention, embed)
 	end
-	return output
 end
 
 bot.command :legacy do |event|
 	File.open("./card-backs/img834.jpg", "r") do |file|
-		event.send_file(file)
+		output = ""
+		unless @deck["legacy"].empty?
+			card = @deck["legacy"].shuffle!.pop
+			output << "*Choose one option for your final narrated epilogue. It may be about your character or the Isolation as a whole. End your story.*\n||"
+			output << card["op1"] + "\n**OR**\n"
+			output << card["op2"] + "\n**OR**\n"
+			output << card["op3"] + " ||"
+		else
+			output << "**No cards left**\n"
+		end
+		embed = Discordrb::Webhooks::Embed.new
+		embed.title = "Legacy"
+		embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: "https://media.discordapp.net/attachments/789161688221483038/793232158944788530/img834.jpg")
+		embed.description = output
+		event.send_embed(event.user.mention, embed)
 	end
-	output = "#{event.user.mention}\n"
-	unless @deck["legacy"].empty?
-		card = @deck["legacy"].shuffle!.pop
-		output << "*Choose one option for your final narrated epilogue. It may be about your character or the Isolation as a whole. End your story.*\n||"
-		output << card["op1"] + "\n**OR**\n"
-		output << card["op2"] + "\n**OR**\n"
-		output << card["op3"] + " ||"
-	else
-		output << "**No cards left**\n"
-	end
-	return output
 end
 
 bot.command :reset do |event, deckname|
