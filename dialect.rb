@@ -73,8 +73,8 @@ bot.command :archetypes do |event|
 		output = ""
 		for ii in (0..2)
 			unless @deck["archetypes"].empty?
-				pp card
 				card = @deck["archetypes"].shuffle!.pop
+				pp card
 				output << "|| **" + card["title"] + "**\n"
 				output << card["desc"] + "\n"
 				output << "**" + card["aspects"] + "** ||\n\n"
